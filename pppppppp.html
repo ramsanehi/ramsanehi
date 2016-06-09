@@ -1,0 +1,39 @@
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-2.x-git.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" >
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+<script>
+$(document).ready(function(){
+ $("#submitbtn").click(function(){
+  console.log("Is it working");
+$(".ok").text("bye");
+
+});
+});
+</script>
+</head>
+<body>
+<div class="container">
+
+<div align="center"class="col-md-offset-2 col-md-8">
+<span id="msg">hi</span>
+<span class="ok"id="msg1">hi</span>
+<span class="ok"id="msg2">ok</span>
+<button id="submit" class="btn btn-danger"">submit</button>
+<button class="btn btn-success">Submit</button>
+</div>
+</div>
+
+
+</body>
+</html>
