@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
+</head>
+<style type="text/css">
+    .box{
+        padding: 20px;
+        display: none;
+        margin: 10px;
+        border: 2px solid blue;
+    }
+    .red{
+        background-color:red ;
+    }
+    .green{
+        background-color: green;
+    }
+</style>
+<body>
+<div class="container">
+<label><input type="radio"  name="colorRadio" value="car">I have a car</label>
+<label><input type="radio" name="colorRadio" value="bike">I have a bike</label>
+</div>
+<div class="red box">I have a car </strong></div>
+<div class="green box">I have a car </strong></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+       $('input[type="radio"]').click(function() {
+           if($(this).attr('value')=="car"){
+               $('.box').not('.red').hide();
+               $(".red").css("border","1px solid red")
+               $('.red').show();
+
+           }
+           if($(this).attr('value')=="bike"){
+               $('.box').not('.green').hide();
+               $(".green").css("border","1px solid green")
+
+               $('.green').show();
+           }
+       }) ;
+    });
+</script>
+</body>
+</html>
