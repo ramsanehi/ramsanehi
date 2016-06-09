@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#btn1').click(function(){
+                $(this).slideUp();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('#btn2').click(function(){
+                $(this).hide();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('#btn3').click(function(){
+                alter('msg');
+            });
+        });
+    </script>
+    <script>
+        var counter=0;
+        $(document).ready(function(){
+            $('#btn4').click(function(){
+                counter++;
+                $(this).text("counter" + counter+ "achived");
+
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <button class="btn btn-success" id="btn1" >success</button><br><br>
+    <button class="btn btn-warning" id="btn2">warning</button><br><br>
+    <button class="btn btn-danger" id="btn3">danger</button><br><br>
+    <button class="btn btn-info" id="btn4">infocount</button><br><br>
+</div>
+</body>
+</html>
