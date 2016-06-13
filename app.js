@@ -1,49 +1,103 @@
-var express = require('express');
-var session = require('cookie-session'); // Loads the piece of middleware for sessions
-var ejs = require('ejs')
-var bodyParser = require('body-parser'); // Loads the piece of middleware for managing the settings
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-var app = express();
+var express  = require('express'),
+   mongoose = require('mongoose'),
+   bodyParser = require('body-parser'),
+
+    // Mongoose Schema definition
+    Schema = new mongoose.Schema({
+      studentId       : String, 
+      name    : String,
+      department: String,
+      year    : String ,   
+      isPassedOut    : Boolean    
+    }),
+
+    User = mongoose.model('User', Schema);
+
+    mongoose.connect('mongodb://rama:123456@ds013564.mlab.com:13564/ram-database');
+    
 
 
-/* Using sessions */
-app.use(session({secret: 'todotopsecret'}))
+    var app = express()
+    
+    app.use(bodyParser.json()); // get information from html forms
+    app.use(bodyParser.urlencoded({extended: true}));
+ 
 
+  app.get('/api', function (req, res) {
+    res.json(200, {msg: 'OK' });
+  })
 
-/* If there is no to do list in the session, 
-we create an empty one in the form of an array before continuing */
-app.use(function(req, res, next){
-    if (typeof(req.session.todolist) == 'undefined') {
-        req.session.todolist = [];
-    }
-    next();
-})
+  app.get('/api/users', function (req, res) {
+    // http://mongoosejs.com/docs/api.html#query_Query-find
+    User.find({}, function ( err, users ){
+      res.status(200).json(users);
+    });
+  })
 
-/* The to do list and the form are displayed */
-app.get('/todo', function(req, res) { 
-    res.render('todo.ejs', {todolist: req.session.todolist});
-})
+  app.post('/api/user', function (req, res) {
+        var user = new User(
+        {
+        StudentId : req.body.StudentId,
+        name : req.body.name,
+        department : req.body.department,
+        year : req.body.year,
+        isPassedOut : req.body.isPassedOut
+        }
+    );
+  
+    // http://mongoosejs.com/docs/api.html#model_Model-save
+    user.save(function (err, data) {
+        if(!err && data){
+            console.log(data)
+            res.status(200).json(data)
+        } else {
+            console.log(err)
+        }
+      
+    });
+  })
 
-/* Adding an item to the to do list */
-app.post('/todo/add/', urlencodedParser, function(req, res) {
-    if (req.body.newtodo != '') {
-        req.session.todolist.push(req.body.newtodo);
-    }
-    res.redirect('/todo');
-})
+  app.delete('/api/users', function (req, res) {
+    // http://mongoosejs.com/docs/api.html#query_Query-remove
+    User.remove({ isPassedOut: true }, function ( err ) {
+      res.json(200, {msg: 'OK'});
+    });
+  })
 
-/* Deletes an item from the to do list */
-.get('/todo/delete/:id', function(req, res) {
-    if (req.params.id != '') {
-        req.session.todolist.splice(req.params.id, 1);
-    }
-    res.redirect('/todo');
-})
+  app.get('/api/users/:id', function (req, res) {
+    // http://mongoosejs.com/docs/api.html#model_Model.findById
+    User.findById( req.params.id, function ( err, todo ) {
+      res.json(200, todo);
+    });
+  })
 
-/* Redirects to the to do list if the page requested is not found */
-.use(function(req, res, next){
-    res.redirect('/todo');
-})
+  app.put('/api/users/:id', function (req, res) {
+    // http://mongoosejs.com/docs/api.html#model_Model.findById
+    User.findById( req.params.id, function ( err, user ) {
+      user.isPassedOut = req.body.completed;
+      // http://mongoosejs.com/docs/api.html#model_Model-save
+      todo.save( function ( err, data ){
+          if(!err && data){
+           res.status(200).json(data)
+          } else {
+              console.log(err)
+          }
+       
+      });
+    });
+  })
 
-.listen(8080);
+  app.delete('/api/users/:id', function (req, res) {
+    // http://mongoosejs.com/docs/api.html#model_Model.findById
+    User.findById( req.params.id, function ( err, user ) {
+      // http://mongoosejs.com/docs/api.html#model_Model.remove
+      user.remove( function ( err, user ){
+           res.status(200, {msg: 'OK'})
+      });
+    });
+  })
+
+  app.listen(1338);
+console.log('Magic happens on port 1338');
+
