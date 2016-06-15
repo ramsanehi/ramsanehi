@@ -53,9 +53,11 @@ app.get('/adduser',function(req,res){
         mobileNo : req.body.mobileNo,
         emailAddress : req.body.emailAddress,
         Address : req.body.Address,
-        }
-    );
-  
+        
+   } );
+       
+
+   
     // http://mongoosejs.com/docs/api.html#model_Model-save
     user.save(function (err, data) {
         if(!err && data){
@@ -81,6 +83,61 @@ app.get('/adduser',function(req,res){
     });
   })
 
+  app.post('/api/edituser/:id', function (req, res) {
+    // http://mongoosejs.com/docs/api.html#query_Query-remove
+   User.findById( req.params.id, function ( err, user ) {
+    //console.log(user)
+    user.userName = req.body.userName
+    user.Password = req.body.Password
+    user.mobileNo = req.body.mobileNo
+    user.emailAddress = req.body.emailAddress
+    user.Address = req.body.Address
+
+    user.save(function(err,data){
+      if(!err && data){
+        res.redirect('/')
+      }
+      else
+      {
+        console.log(err)
+      }
+    });
+  });
+ });
+
+
+app.get('/api/users/:id', function (req, res) {
+    // http://mongoosejs.com/docs/api.html#model_Model.findById
+    User.findById( req.params.id, function ( err, user ) {
+        if(!err && user){
+          res.status(200).json(user)
+            
+          }
+           // res.status(200).json(user)
+         else {
+            console.log(err)
+        }
+    });
+  })
+     app.get('/edituser/:id', function (req, res) {
+    // http://mongoosejs.com/docs/api.html#model_Model.findById
+    User.findById( req.params.id, function ( err, user ) {
+      //user.remove({isPassedOut:true},function(err){
+          if(!err && user){
+            res.render('edituser.ejs',{
+             data:user 
+            })
+
+           //console.log("user delete successfully")
+          } 
+          else {
+              console.log(err)
+          }
+       
+    
+    });
+  })
+
   app.get('/userdetails/:id', function (req, res) {
     // http://mongoosejs.com/docs/api.html#model_Model.findById
     User.findById( req.params.id, function ( err, user ) {
@@ -95,7 +152,9 @@ app.get('/adduser',function(req,res){
     });
   })
 
-  app.get('/api/user/:id', function (req, res) {
+  
+
+    app.put('/api/user/:id', function (req, res) {
     // http://mongoosejs.com/docs/api.html#model_Model.findById
     User.findById( req.params.id, function ( err, user ) {
       user.isPassedOut = req.body.completed;
@@ -106,10 +165,10 @@ app.get('/adduser',function(req,res){
           } else {
               console.log(err)
           }
-       
+       });
       });
-    });
   });
+    
 
   app.delete('/api/users/:id', function (req, res) {
     // http://mongoosejs.com/docs/api.html#model_Model.findById
@@ -119,8 +178,10 @@ app.get('/adduser',function(req,res){
            res.status(200, {msg: 'User deleted successfully'})
       });
     });
-  })
+  
+})
 
 app.listen(1338);
 console.log('Magic happens on port 1338');
+
 
